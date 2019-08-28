@@ -1,0 +1,86 @@
+<body>
+    <script type="text/javascript" src="http://d3js.org/d3.v5.min.js"></script>
+    <script>
+        var data = [
+            [0, 300],
+            [100, 50],
+            [200, 300 / 2],
+            [300, 50],
+            [400, 300 / 3],
+            [500, 50]
+        ];
+        var lineCurve = d3.line().curve(d3.curveNatural);
+        var pathData = lineCurve(data);
+
+        var canvas = d3.select("body").append("svg")
+            .attr("width", 600)
+            .attr("height", 400)
+            .style("background-color", "yellow");
+
+        var defs = canvas.append("svg:defs");
+        defs.append("svg:marker")
+            .attr("id", "arrow")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", -1.5)
+            .attr("markerWidth", 10)
+            .attr("markerHeight", 10)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .style("fill", '#ff0000');
+        
+        // defs.append("svg:marker")
+        //     .attr("id", "arrow")
+        //     .attr("viewBox", "0 -5 10 10")
+        //     .attr("refX", 10)
+        //     .attr("refY", 0)
+        //     .attr("markerWidth", 10)
+        //     .attr("markerHeight", 10)
+        //     .attr("orient", "auto")
+        //     .append("path")
+        //     .attr("d", "M0,-5L10,0L0,5")
+        //     .style("fill", "none");
+
+        var g = canvas.append("g")
+            .attr("transform", "translate(" + 50 + "," + 0 + ")")
+
+        var lineCube = g.append("path")
+            .attr('d', pathData)
+            .attr("stroke", "#ff0000")
+            .attr("stroke-width", 5)
+            .attr("fill", "none")
+
+        var line = g.append('line')
+            .attr('d', pathData)
+            .attr("x1", 50)
+            .attr("y1", 60)
+            .attr("x2", 120)
+            .attr("y2", 200)
+            .attr("stroke-width", 4)
+            .attr("stroke", '#ff0000')
+            .attr("marker-end", "url(#arrow)")
+
+        var path = g.append("path")
+            .attr("d", lineCurve([
+                [55, 65],
+                [125, 205]
+            ]))
+            .attr("stroke-width", 4)
+            .attr("stroke", '#ff0000')
+
+        var pathCircle = g.append("path")
+            .attr("d", lineCurve([
+                [100, 100],
+                [100, 150],
+                [150, 150],
+                [150, 100],
+                [100, 100]
+            ]))
+            .attr("stroke-width", 4)
+            .attr("stroke", '#ff0000')
+            .attr('stroke-linecap', 'round')
+            .attr("fill", "none")
+            .attr("marker-end", "url(#arrow)")
+    </script>
+</body>

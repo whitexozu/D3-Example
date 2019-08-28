@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>cardinal spline</title>
+  <style>
+    body {
+      padding: 50px;
+      overflow-y: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="cardinal-curve"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.6.0/d3.js"></script>
+  <!-- <script src="http://d3js.org/d3.v4.min.js"></script> -->
+  <script> 
+    const rawIntonationData = "2|4|0|0|7|6|7|5|5|0|1|7|3|5|2|5|1|1|5|9|9|8";
+    const intonations = rawIntonationData.split('|').map(Number);
+
+    const minIntonation = d3.min(intonations);
+    const maxIntonation = d3.max(intonations);
+
+    const svgWidth = window.innerWidth - 100;
+    const svgHeight = window.innerHeight - 100;
+
+    const xLinearScale = d3.scaleLinear()
+      .domain([0, intonations.length])
+      .range([0, svgWidth]);
+
+    const yLinearScale = d3.scaleLinear()
+      .domain([minIntonation, maxIntonation])
+      .range([0, svgHeight]);
+
+    const svg = d3.select('.cardinal-curve')
+      .append('svg')
+      .attr('width', svgWidth)
+      .attr('height', svgHeight);
+
+    const cardinalCurveLine = d3.line()
+      .x((v, idx) => xLinearScale(idx))
+      .y(v => yLinearScale(v))
+      .curve(d3.curveCatmullRomOpen); // https://github.com/d3/d3-shape/blob/master/README.md#curves
+    
+    svg.append('path')
+      .datum(intonations)
+      .attr('d', cardinalCurveLine)
+      .attr('fill', 'none')      
+      .attr('stroke', 'pink');
+    </script>
+</body>
